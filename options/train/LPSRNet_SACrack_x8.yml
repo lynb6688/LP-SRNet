@@ -1,0 +1,106 @@
+# LP-SRNet reconstruction pretraining, 8x longitudinal degradation.
+name: LPSRNet_SACrack_x8
+model_type: LongitudinalSRModel
+scale: 8
+num_gpu: auto
+manual_seed: 10
+
+datasets:
+  train:
+    name: SACrack
+    type: LongitudinalPairedDataset
+    dataroot_gt: datasets/SACrack/train/HR
+    dataroot_lq: datasets/SACrack/train/LR/x8
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+    gt_size_h: 256
+    gt_size_w: 256
+    use_hflip: true
+    use_vflip: true
+
+    use_shuffle: true
+    num_worker_per_gpu: 4
+    batch_size_per_gpu: 4
+    dataset_enlarge_ratio: 1
+    prefetch_mode: ~
+
+  val:
+    name: SACrack_val
+    type: LongitudinalPairedDataset
+    dataroot_gt: datasets/SACrack/val/HR
+    dataroot_lq: datasets/SACrack/val/LR/x8
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+network_g:
+  type: LPSRNet
+  dim: 36
+  n_blocks: 8
+  ffn_scale: 2
+  upscaling_factor: 8
+  in_channels: 1
+  out_channels: 1
+  gafmb_index: 3
+  use_ea: true
+  use_pdcfn: true
+  use_pps: true
+  pool_size: 8
+
+path:
+  pretrain_network_g: ~
+  strict_load_g: true
+  resume_state: ~
+
+train:
+  ema_decay: 0.999
+  optim_g:
+    type: Adam
+    lr: !!float 1e-3
+    weight_decay: 0
+    betas: [0.9, 0.99]
+  scheduler:
+    type: CosineAnnealingRestartLR
+    periods: [300000]
+    restart_weights: [1]
+    eta_min: !!float 1e-6
+  total_iter: 300000
+  warmup_iter: -1
+
+  pixel_opt:
+    type: L1Loss
+    loss_weight: 1.0
+    reduction: mean
+  fft_opt:
+    type: FFTLoss
+    loss_weight: 0.05
+    reduction: mean
+
+val:
+  val_freq: !!float 5000
+  save_img: false
+  pbar: false
+  tile_size: [128, 512]
+  tile_overlap: 16
+  metrics:
+    psnr:
+      type: calculate_psnr
+      crop_border: 8
+      test_y_channel: false
+    ssim:
+      type: calculate_ssim
+      crop_border: 8
+      test_y_channel: false
+
+logger:
+  print_freq: 100
+  save_checkpoint_freq: !!float 5000
+  use_tb_logger: true
+  wandb:
+    project: ~
+    resume_id: ~
+
+dist_params:
+  backend: nccl
+  port: 29500

@@ -1,0 +1,55 @@
+name: LPSRNet_x4
+model_type: LongitudinalSRModel
+scale: 4
+num_gpu: 1
+manual_seed: 0
+
+datasets:
+  test_1:
+    name: SACrack
+    type: LongitudinalPairedDataset
+    dataroot_gt: datasets/SACrack/test/HR
+    dataroot_lq: datasets/SACrack/test/LR/x4
+    io_backend:
+      type: disk
+  test_2:
+    name: ZJNUCrack
+    type: LongitudinalPairedDataset
+    dataroot_gt: datasets/ZJNUCrack/test/HR
+    dataroot_lq: datasets/ZJNUCrack/test/LR/x4
+    io_backend:
+      type: disk
+
+network_g:
+  type: LPSRNet
+  dim: 36
+  n_blocks: 8
+  ffn_scale: 2
+  upscaling_factor: 4
+  in_channels: 1
+  out_channels: 1
+  gafmb_index: 3
+  use_ea: true
+  use_pdcfn: true
+  use_pps: true
+  pool_size: 8
+
+path:
+  pretrain_network_g: experiments/LPSRNet_SACrack_x4/models/net_g_latest.pth
+  param_key_g: params_ema
+  strict_load_g: true
+
+val:
+  save_img: true
+  suffix: ~
+  tile_size: [128, 512]
+  tile_overlap: 16
+  metrics:
+    psnr:
+      type: calculate_psnr
+      crop_border: 4
+      test_y_channel: false
+    ssim:
+      type: calculate_ssim
+      crop_border: 4
+      test_y_channel: false

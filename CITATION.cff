@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: "If you use LP-SRNet, please cite the article below."
+title: "LP-SRNet"
+authors:
+  - family-names: Liang
+    given-names: Yi
+  - family-names: Yang
+    given-names: Wenjing
+  - family-names: Yan
+    given-names: Shaowei
+  - family-names: Zhu
+    given-names: Junqing
+  - family-names: Li
+    given-names: Jirui
+  - family-names: Yang
+    given-names: Xiwen
+preferred-citation:
+  type: article
+  title: "Task-Driven Super-Resolution for Pavement Distress Detection from Longitudinally Undersampled 3D Laser Depth Images"
+  authors:
+    - family-names: Liang
+      given-names: Yi
+    - family-names: Yang
+      given-names: Wenjing
+    - family-names: Yan
+      given-names: Shaowei
+    - family-names: Zhu
+      given-names: Junqing
+    - family-names: Li
+      given-names: Jirui
+    - family-names: Yang
+      given-names: Xiwen
+  journal: "The Visual Computer"
+  year: 2026
