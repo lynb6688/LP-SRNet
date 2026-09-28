@@ -158,13 +158,23 @@ For a direct detector run on low-resolution images, divide the longitudinal box 
 
 ## Results reported in the article
 
-On SACrack, LP-SRNet improves PSNR/SSIM over the longitudinal SMFANet baseline by 0.60 dB / 0.0134 at 4× (31.20 dB / 0.8205) and by 0.46 dB / 0.0131 at 8× (29.23 dB / 0.7926).
+On SACrack, LP-SRNet improves PSNR/SSIM over the longitudinal SMFANet baseline by 0.60 dB / 0.0134 at 4× (31.20 dB / 0.8205) and by 0.46 dB / 0.0131 at 8× (29.23 dB / 0.7926). Against SRFormer-light it gains 0.32 dB at 4× with 78.5% fewer parameters, and 0.16 dB at 8× with 84.0% fewer parameters.
+
+<p align="center">
+  <img width="920" alt="Fig. 5 parameters and PSNR" src="./figs/Fig5.png"><br>
+  <em>Fig. 5. Parameters, FLOPs, and PSNR under longitudinal degradation. Marker area is FLOPs.</em>
+</p>
 
 On ZJNUCrack, detector-guided TDSR-0.01 is the strongest detection setting. Relative to the best reconstruction-only fine-tune (SR-FT+), mAP@50 rises from 0.424 to 0.457 at 4× and from 0.339 to 0.381 at 8×. PSNR falls by 1.33 dB and 1.31 dB. Detection on the original HR images is 0.506 mAP@50. The same frozen detector and inference settings are used for every reconstruction.
 
 <p align="center">
-  <img width="860" alt="Fig. 5 qualitative comparison" src="./figs/Fig5.png"><br>
-  <em>Fig. 5. Qualitative comparison under 4× longitudinal degradation. Every box comes from the same frozen detector. PSNR is in decibels.</em>
+  <img width="920" alt="Fig. 6 PSNR and detection" src="./figs/Fig6.png"><br>
+  <em>Fig. 6. PSNR and mAP@50 on ZJNUCrack. TDSR-0.01 is below SR-FT+ in PSNR and above it in detection. The dashed line is 0.506 mAP@50 on the original HR images.</em>
+</p>
+
+<p align="center">
+  <img width="920" alt="Fig. 7 detection gains" src="./figs/Fig7.png"><br>
+  <em>Fig. 7. Stepwise detection gains from the longitudinal SMFANet baseline to TDSR-0.01. At 4×, mAP@50 rises from 0.342 to 0.457. At 8×, it rises from 0.154 to 0.381. The hatched bar is the remaining gap to HR detection.</em>
 </p>
 
 ## Citation
